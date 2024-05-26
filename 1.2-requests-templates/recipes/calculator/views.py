@@ -18,7 +18,32 @@ DATA = {
     },
     # можете добавить свои рецепты ;)
 }
+def omlet(request):
+    servings = int(request.GET.get('servings', 1))
+    for ingredient in DATA['omlet']:
+        DATA['omlet'][ingredient] *= servings
+    context = {
+        'recipe': DATA['omlet']
+    }
+    return render(request, 'calculator/index.html', context)
 
+def pasta(request):
+    servings = int(request.GET.get('servings', 1))
+    for ingredient in DATA['pasta']:
+        DATA['pasta'][ingredient] *= servings
+    context = {
+        'recipe': DATA['pasta']
+    }
+    return render(request, 'calculator/index.html', context)
+
+def buter(request):
+    servings = int(request.GET.get('servings', 1))
+    for ingredient in DATA['buter']:
+        DATA['buter'][ingredient] *= servings
+    context = {
+        'recipe': DATA['buter']
+    }
+    return render(request, 'calculator/index.html', context)
 # Напишите ваш обработчик. Используйте DATA как источник данных
 # Результат - render(request, 'calculator/index.html', context)
 # В качестве контекста должен быть передан словарь с рецептом:
