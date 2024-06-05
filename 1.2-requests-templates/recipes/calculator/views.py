@@ -18,32 +18,27 @@ DATA = {
     },
     # можете добавить свои рецепты ;)
 }
-def omlet(request):
-    servings = int(request.GET.get('servings', 1))
-    for ingredient in DATA['omlet']:
-        DATA['omlet'][ingredient] *= servings
-    context = {
-        'recipe': DATA['omlet']
-    }
-    return render(request, 'calculator/index.html', context)
 
-def pasta(request):
-    servings = int(request.GET.get('servings', 1))
-    for ingredient in DATA['pasta']:
-        DATA['pasta'][ingredient] *= servings
-    context = {
-        'recipe': DATA['pasta']
-    }
-    return render(request, 'calculator/index.html', context)
+def dish_views(request, dish):
+    servings = request.GET.get('servings')
+    price = {}
+    for ing, amo in DATA[dish].items():
+        if servings:
+            price[ing] = amo * (int(servings))
+            context = {'recipe': price}
+        if not servings:
+            price[ing]=amo
+            context = {'recipe': price}
 
-def buter(request):
-    servings = int(request.GET.get('servings', 1))
-    for ingredient in DATA['buter']:
-        DATA['buter'][ingredient] *= servings
-    context = {
-        'recipe': DATA['buter']
-    }
-    return render(request, 'calculator/index.html', context)
+    return render(request, template_name='calculator/index.html', context=context)
+
+
+def home_view(request):
+
+    all_recipes = list(DATA.keys())
+    context = {'all_recipes': all_recipes}
+
+    return render(request, template_name='home/home.html', context=context)
 # Напишите ваш обработчик. Используйте DATA как источник данных
 # Результат - render(request, 'calculator/index.html', context)
 # В качестве контекста должен быть передан словарь с рецептом:
