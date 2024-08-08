@@ -13,5 +13,5 @@ def show_catalog(request):
 
 def show_product(request, slug):
     template = 'product.html'
-    context = {}
+    context = {'phones': Phone.objects.order_by('name')}
     return render(request, template, context)
