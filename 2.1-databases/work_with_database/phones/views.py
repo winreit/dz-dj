@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from .models import Phone
 
 
 def index(request):
@@ -7,11 +8,22 @@ def index(request):
 
 def show_catalog(request):
     template = 'catalog.html'
-    context = {}
+    sort = request.GET.get('sort')
+    if sort == 'name':
+        phone_objects = Phone.objects.order_by('name')
+    elif sort == 'min_price':
+        phone_objects = Phone.objects.order_by('price')
+    elif sort == 'max_price':
+        phone_objects = Phone.objects.order_by('price').reverse()
+    else:
+        phone_objects = Phone.objects.all()
+    context = {'phones': phone_objects}
     return render(request, template, context)
+
+
 
 
 def show_product(request, slug):
     template = 'product.html'
-    context = {'phones': Phone.objects.order_by('name')}
+    context = {'phone': Phone.objects.get(slug=slug)}
     return render(request, template, context)
